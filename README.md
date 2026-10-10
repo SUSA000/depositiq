@@ -201,6 +201,84 @@ python -m pytest backend\tests -q
 
 The tests cover authentication, duplicate email handling, invalid credentials, protected prediction access, input validation, exact regression probability, persistence, dashboard aggregation, history, and real-dataset statistics.
 
+## Collaboration and Contribution Guide
+
+These instructions are for anyone joining the DepositIQ project.
+
+### 1. Clone the repository and create a branch
+
+```powershell
+git clone https://github.com/SUSA000/depositiq.git
+cd depositiq
+git checkout -b feature/short-description
+```
+
+Use a separate branch for every feature, bug fix, documentation change, or experiment. Do not work directly on `main`.
+
+### 2. Set up the project
+
+Follow the [Backend Setup](#backend-setup) and [Frontend Setup](#frontend-setup) sections above. Each contributor must create local copies of:
+
+- `backend/.env.example` as `backend/.env`
+- `frontend/.env.example` as `frontend/.env`
+
+Never commit `.env` files, passwords, JWT keys, database files, `node_modules`, or build output. These files are already excluded by `.gitignore`.
+
+### 3. Make changes in the correct layer
+
+- **Backend API:** update routes in `backend/app/api/`, request and response models in `backend/app/schemas/`, and shared configuration or security code in `backend/app/core/`.
+- **Business and ML logic:** update services in `backend/app/services/`. Preserve the saved model artifacts, feature order, preprocessing behavior, and `0.5` decision threshold unless the change explicitly includes model validation.
+- **Frontend:** update pages and components in `frontend/src/`. Keep API calls aligned with the backend endpoint and schema.
+- **Database changes:** update SQLAlchemy models in `backend/app/models/`, database initialization code, and the related tests. Explain any migration or data-reset requirement in the pull request.
+- **Tests:** add or update backend tests in `backend/tests/` for every changed API or business rule.
+
+### 4. Validate before opening a pull request
+
+Run the backend tests from the project root:
+
+```powershell
+python -m pytest backend\tests -q
+```
+
+Build the frontend to catch JavaScript and production-bundle errors:
+
+```powershell
+cd frontend
+npm run build
+cd ..
+```
+
+If the change affects the running application, verify both services locally and check the API documentation at `http://127.0.0.1:8001/docs`.
+
+### 5. Commit and open a pull request
+
+```powershell
+git status
+git add <changed-files>
+git commit -m "Describe the change"
+git push -u origin feature/short-description
+```
+
+Open a pull request against `main` and include:
+
+- What changed and why
+- How the change was tested
+- Screenshots or a short recording for visual changes
+- API, database, model, or environment changes that other contributors must know about
+- Any known limitations or follow-up work
+
+Keep pull requests focused and avoid unrelated formatting or generated-file changes. Request review from at least one other contributor before merging.
+
+### Contribution checklist
+
+- [ ] The branch is based on the latest `main`.
+- [ ] No secrets, local databases, `node_modules`, or build artifacts are included.
+- [ ] Relevant tests were added or updated.
+- [ ] `python -m pytest backend\tests -q` passes.
+- [ ] `npm run build` passes for frontend changes.
+- [ ] README or API documentation was updated when behavior changed.
+- [ ] The pull request explains the implementation and validation steps.
+
 ## Screenshots
 
 Add final screenshots here after running the application:
